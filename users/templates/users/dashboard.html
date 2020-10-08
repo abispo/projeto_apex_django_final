@@ -1,0 +1,32 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+Olá, {{ user.username|default:'Convidado' }}!
+<hr>
+
+<div>
+    {% if user.is_authenticated %}
+    Message: {{ message }}
+    <h2>Atualizar dados</h2>
+    <form action="{% url 'users:user_update' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <div>
+            <label for="first_name">Nome</label>
+            <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}">
+        </div>
+        <div>
+            <label for="last_name">Sobrenome</label>
+            <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}">
+        </div>
+        <br>
+        <input type="submit" value="Salvar">
+    </form>
+    <div><a href="{% url 'users:logout' %}">Logout</a></div>
+    {% else %}
+    <div><a href="{% url 'users:login' %}">Login</a></div>
+    {% endif %}
+</div>
+{% endblock %}
